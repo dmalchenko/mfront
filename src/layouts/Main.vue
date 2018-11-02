@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh Lpr lFf">
     <q-layout-header>
       <q-toolbar
         color="primary"
@@ -20,6 +20,15 @@
           Quasar App
           <div slot="subtitle">Running on Quasar v{{ $q.version }}</div>
         </q-toolbar-title>
+
+        <q-btn
+          flat
+          dense
+          round
+          @click="logout"
+        >
+          <q-icon name="exit_to_app" />
+        </q-btn>
       </q-toolbar>
     </q-layout-header>
 
@@ -72,8 +81,19 @@ export default {
       leftDrawerOpen: this.$q.platform.is.desktop
     }
   },
+  mounted () {
+    console.log(!localStorage.getItem('access_token') || !localStorage.getItem('refresh_token'), localStorage.getItem('access_token'), localStorage.getItem('refresh_token'))
+    if (!localStorage.getItem('access_token') || !localStorage.getItem('refresh_token')) {
+      this.$router.push('/login')
+    }
+  },
   methods: {
-    openURL
+    openURL,
+    logout () {
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('refresh_token')
+      this.$router.push('/login')
+    }
   }
 }
 </script>
